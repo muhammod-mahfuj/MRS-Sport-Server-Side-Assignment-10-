@@ -68,9 +68,10 @@ async function run() {
     // Feedback store to database
     app.post('/feedback', async (req, res) => {
       const { name, email, rating, feedback } = req.body;
-  
+       if (!name || !email || !rating || !feedback) {
+        return res.status(400).send({ message: "All fields are required" });
+      }
       const result = await feedbackCollection.insertOne({ name, email, rating, feedback });
-  
       res.send(result);
     });
 
