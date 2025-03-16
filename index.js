@@ -32,6 +32,8 @@ async function run() {
     await client.connect();
    
     const EquipmentDatabase = client.db("equipmentDB").collection("equipment");
+    const feedbackCollection = client.db("equipmentDB").collection("feedback");
+    
     const UsersDatabase = client.db("equipmentDB").collection("users");
     
     app.post('/equipment', async(req,res) => {
@@ -62,6 +64,15 @@ async function run() {
     //   const result = await EquipmentDatabase.find(query).toArray();
     //   res.send(result);
     // });
+
+    // Feedback store to database
+    app.post('/feedback', async (req, res) => {
+      const { name, email, rating, feedback } = req.body;
+  
+      const result = await feedbackCollection.insertOne({ name, email, rating, feedback });
+  
+      res.send(result);
+    });
 
     // update my equipment list
     app.patch('/equipment/:id', async(req,res) => {
