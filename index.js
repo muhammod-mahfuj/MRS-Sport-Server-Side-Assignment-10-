@@ -22,7 +22,7 @@ const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@clust
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
-    strict: true,
+    strict: true ,
     deprecationErrors: true,
   }
 });
