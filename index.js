@@ -1,9 +1,10 @@
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb' ;
 import dotenv from 'dotenv';
 
-dotenv.config();
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -29,10 +30,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-   
+    // await client.connect();
+
     const EquipmentDatabase = client.db("equipmentDB").collection("equipment");
-    const feedbackCollection = client.db("equipmentDB").collection("feedback");
     
     const UsersDatabase = client.db("equipmentDB").collection("users");
     
@@ -65,20 +65,8 @@ async function run() {
     //   res.send(result);
     // });
 
-    // Feedback store to database
-    app.post('/feedbacks', async (req, res) => {
-      const { name, email, rating, feedback } = req.body;
-       if (!name || !email || !rating || !feedback) {
-        return res.status(400).send({ message: "All fields are required" });
-      }
-      const result = await feedbackCollection.insertOne({ name, email, rating, feedback });
-      res.send(result);
-    });
-     app.get('/feedbacks', async(req,res) => {
-      const cursor = feedbackCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
+
+  
 
     // update my equipment list
     app.patch('/equipment/:id', async(req,res) => {
@@ -133,7 +121,7 @@ async function run() {
     })
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
